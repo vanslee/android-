@@ -21,47 +21,44 @@ import com.ldx.MyApplication.utils.DataUtils;
  */
 public class RegistryActivity extends AppCompatActivity {
     private EditText ePhone;
-    private EditText epw;
-    private EditText eConfirmpw;
+    private EditText ePw;
+    private EditText eConfimPw;
     private TextView tRegistry;
-    public static String type = "1";
-    public String name;
-    public String password;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
         initView();
-        if (type.equals("1")) {
-
-        } else {
-            name = DataUtils.getSharedPreferences("name");
-            password = DataUtils.getSharedPreferences("pwd");
-        }
     }
 
     private void initView() {
         ePhone = findViewById(R.id.registry_et_phone);
-        epw = findViewById(R.id.registry_et_pw);
-        eConfirmpw = findViewById(R.id.registry_et_confirmpw);
+        ePw = findViewById(R.id.registry_et_pw);
+        eConfimPw = findViewById(R.id.registry_et_confirmpw);
         tRegistry = findViewById(R.id.registry_tv_registry);
-        String phone = ePhone.getText().toString().trim();
-        String password = epw.getText().toString().trim();
-        String confirmPw = eConfirmpw.getText().toString().trim();
+
         //TODO 添加点击事件
         tRegistry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 首先我们判断用户名是否是11,
-                // 第二我们判断密码是否大于6位
+                String phone = ePhone.getText().toString().trim();
+                String password = ePw.getText().toString().trim();
+                String confirmPw = eConfimPw.getText().toString().trim();
+                //TODO
+                // 第一我们判断用户名是否是11,
+                // 第二我们判断密码是否大于等于6位
                 // 第三我们来判断两个密码输入是否一致
                 if (phone.length() == 11) {
                     if (password.length() >= 6) {
                         if (password.equals(confirmPw)) {
-                            Intent intent = new Intent();
+                            LoginActivity.type = "2";
+                            DataUtils.setSharedPreferences(RegistryActivity.this, "phone", phone);
+                            DataUtils.setSharedPreferences(RegistryActivity.this, "password", password);
+                            Intent intent = new Intent(RegistryActivity.this, LoginActivity.class);
                             intent.setClass(RegistryActivity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegistryActivity.this);
                             builder.setMessage("您两次输入的密码不一致");
@@ -70,7 +67,7 @@ public class RegistryActivity extends AppCompatActivity {
                     } else {
                         // 密码位数<6
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegistryActivity.this);
-                        builder.setMessage("密码不符合规范");
+                        builder.setMessage("您输入的密码小于6位");
                         builder.show();
                     }
                 } else {
@@ -79,9 +76,6 @@ public class RegistryActivity extends AppCompatActivity {
                     builder.setMessage("您输入的手机号有误");
                     builder.show();
                 }
-                Intent intent = new Intent(RegistryActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 

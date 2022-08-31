@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ldx.MyApplication.MainActivity;
+
 import com.ldx.MyApplication.R;
+import com.ldx.MyApplication.utils.DataUtils;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText epw;
     private TextView tLogin;
     private TextView tRegistry;
+    public static String type = "1";
     private String dataName;
     private String dataPwd;
 
@@ -28,6 +30,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+        if (type.equals("1")) {
+
+        } else {
+            dataName = DataUtils.getSharedPreferences("dataName");
+            dataPwd = DataUtils.getSharedPreferences("dataPwd");
+        }
     }
 
     private void initView() {
@@ -44,34 +52,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         String phone = ePhone.getText().toString().trim();
+        String pwd = epw.getText().toString().trim();
         //TODO 通过ID区别各自对象
         switch (view.getId()) {
             case R.id.log_tv_login:
-                if (phone.length() != 11) {
-                    Toast toast = Toast.makeText(this, "手机号不合法", Toast.LENGTH_SHORT);
-                    toast.show();
+                if (phone.length() == 0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setMessage("请输入手机号");
+                    builder.show();
                 } else {
                     if (phone.equals(dataName)) {
-                        if (epw.equals(dataPwd)) {
+                        if (pwd.equals(dataPwd)) {
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
-                        }else {
+                        } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage("您输入的密码有误,请重新输入");
+                            builder.setMessage("您输入的密码有误,请先确认你输入的密码");
                             builder.show();
                         }
-                    }else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                         builder.setMessage("你还未登陆,请先注册");
                         builder.show();
                     }
                 }
                 break;
             case R.id.log_tv_registry:
-                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegistryActivity.class);
                 startActivity(intent);
                 finish();
+                break;
             default:
                 break;
         }
