@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.ldx.MyApplication.R;
+
 /**
  * App功能详情
  */
@@ -29,6 +31,7 @@ public class Details extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View inflate = inflater.inflate(R.layout.fragment_details, container, false);
+        return inflate;
     }
 }

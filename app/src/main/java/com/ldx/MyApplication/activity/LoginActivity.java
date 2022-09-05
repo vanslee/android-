@@ -2,6 +2,7 @@ package com.ldx.MyApplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,10 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ldx.MyApplication.MainActivity;
 
 import com.ldx.MyApplication.R;
+import com.ldx.MyApplication.bean.ResponseResult;
+import com.ldx.MyApplication.constants.SystemContains;
+import com.ldx.MyApplication.pojo.User;
 import com.ldx.MyApplication.utils.DataUtils;
+import com.ldx.MyApplication.utils.SendHttpRequest;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -22,20 +29,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView tLogin;
     private TextView tRegistry;
     public static String type = "1";
-    private String dataName;
-    private String dataPwd;
+    public static String resultJsonData = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-        if (type.equals("1")) {
-
-        } else {
-            dataName = DataUtils.getSharedPreferences("dataName");
-            dataPwd = DataUtils.getSharedPreferences("dataPwd");
-        }
     }
 
     private void initView() {
@@ -61,20 +61,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     builder.setMessage("请输入手机号");
                     builder.show();
                 } else {
-                    if (phone.equals(dataName)) {
-                        if (pwd.equals(dataPwd)) {
-                            Intent intent = new Intent();
-                            intent.setClass(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setMessage("您输入的密码有误,请先确认你输入的密码");
-                            builder.show();
-                        }
-                    } else {
+                    User user = new User(phone, pwd);
+                    SendHttpRequest.sendPOSTRequest(SystemContains.loginURL, user);
+                    Log.e(SystemContains.TAG, resultJsonData);
+                    while ("".equals(resultJsonData)) {
+
+                    }
+                    ResponseResult responseResult = JSON.parseObject(resultJsonData, ResponseResult.class);
+                    if (responseResult.getCode() != 200) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("你还未登陆,请先注册");
+                        builder.setMessage(responseResult.getMsg());
                         builder.show();
+                    } else {
+                        JSONObject jsonObject = JSON.parseObject(responseResult.getData().toString());
+                        String token = (String) jsonObject.get("token");
+                        SendHttpRequest.Authentication = token;
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 }
                 break;

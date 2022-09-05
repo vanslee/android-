@@ -2,6 +2,7 @@ package com.ldx.MyApplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -10,9 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
 import com.ldx.MyApplication.MainActivity;
 import com.ldx.MyApplication.R;
+import com.ldx.MyApplication.bean.ResponseResult;
+import com.ldx.MyApplication.constants.SystemContains;
+import com.ldx.MyApplication.pojo.User;
 import com.ldx.MyApplication.utils.DataUtils;
+import com.ldx.MyApplication.utils.SendHttpRequest;
 
 /**
  * TODO 1. 创建一个类
@@ -24,6 +30,7 @@ public class RegistryActivity extends AppCompatActivity {
     private EditText ePw;
     private EditText eConfimPw;
     private TextView tRegistry;
+    public static String resultJsonData = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,12 +60,22 @@ public class RegistryActivity extends AppCompatActivity {
                     if (password.length() >= 6) {
                         if (password.equals(confirmPw)) {
                             LoginActivity.type = "2";
-                            DataUtils.setSharedPreferences(RegistryActivity.this, "phone", phone);
-                            DataUtils.setSharedPreferences(RegistryActivity.this, "password", password);
-                            Intent intent = new Intent(RegistryActivity.this, LoginActivity.class);
-                            intent.setClass(RegistryActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            User user = new User(phone, password);
+                            SendHttpRequest.sendPOSTRequest(SystemContains.registryURL, user);
+                            while ("".equals(resultJsonData)) {
+
+                            }
+                            Log.e("获取到后端返回的数据", resultJsonData);
+                            ResponseResult responseResult = JSON.parseObject(resultJsonData, ResponseResult.class);
+                            if (responseResult.getCode() != 200) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(RegistryActivity.this);
+                                builder.setMessage(responseResult.getMsg());
+                                builder.show();
+                            } else {
+                                Intent intent = new Intent(RegistryActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(RegistryActivity.this);
                             builder.setMessage("您两次输入的密码不一致");

@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <FrameLayout
-        android:id="@+id/main_frame_tabbar"
+        android:id="@+id/main_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1" />
-
 
     <View
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
         <TextView
@@ -29,28 +29,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableTop="@mipmap/index"
             android:gravity="center"
+            android:paddingTop="8dp"
             android:text="首页"
             android:textColor="@color/black"
             android:textSize="15sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/user_red" />
 
         <TextView
             android:id="@+id/tabbar2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
+            android:drawableTop="@mipmap/details"
             android:gravity="center"
-            android:text="首页"
+            android:text="功能"
             android:textColor="@color/black"
             android:textSize="15sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/user_red" />
 
         <TextView
             android:id="@+id/tabbar3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
+            android:drawableTop="@mipmap/usecenter"
             android:gravity="center"
-            android:text="首页"
+            android:text="用户中心"
             android:textColor="@color/black"
             android:textSize="15sp" />
     </LinearLayout>

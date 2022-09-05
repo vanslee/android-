@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ldx.MyApplication">
+
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
     <!--TODO 去掉主题元素@style/Theme.Design.NoActionBar-->
     <application
         android:allowBackup="true"
@@ -27,14 +29,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegistryActivity" />
-        <!--        <activity-->
-        <!--            android:name=".activity.DetailActivity"-->
-        <!--            android:exported="true">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+
     </application>
 
 </manifest>

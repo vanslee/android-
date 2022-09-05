@@ -2,11 +2,22 @@ package com.ldx.MyApplication.bean;
 
 import java.util.List;
 
+import lombok.Data;
 
-public class HotVideoResult {
+@Data
+public class HistoryOnToday {
     private String reason;
-    private List<HotVideoInfo> result;
+    private List<HistoryOnTodayResult> result;
     private int error_code;
+
+    @Override
+    public String toString() {
+        return "HistoryOnToday{" +
+                "reason='" + reason + '\'' +
+                ", result=" + result +
+                ", error_code=" + error_code +
+                '}';
+    }
 
     public String getReason() {
         return reason;
@@ -16,11 +27,11 @@ public class HotVideoResult {
         this.reason = reason;
     }
 
-    public List<HotVideoInfo> getResult() {
+    public List<HistoryOnTodayResult> getResult() {
         return result;
     }
 
-    public void setResult(List<HotVideoInfo> result) {
+    public void setResult(List<HistoryOnTodayResult> result) {
         this.result = result;
     }
 

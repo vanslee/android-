@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/fragment_usercenter_et"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:hint="请输入手机号"
+        android:paddingLeft="15dp"
+        android:textColor="@color/user_red"
+        android:textColorHint="@color/user_red" />
+
+    <TextView
+        android:id="@+id/fragment_usercenter_btn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="查询"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/fragment_usercenter_logout"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/fragment_usercenter_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/black" />
+</LinearLayout>
